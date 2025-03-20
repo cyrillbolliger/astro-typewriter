@@ -6,10 +6,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cyrillbolliger/astro-typewriter.git",
+    "url": "git+https://github.com/cyrillbolliger/astro-typewriter.git",
     "directory": "packages/astro-typewriter"
   },
-  "homepage": "https://github.com/cyrillbolliger/astro-typewriter#readme",
+  "homepage": "https://cyrillbolliger.github.io/astro-typewriter/",
   "bugs": {
     "url": "https://github.com/cyrillbolliger/astro-typewriter/issues"
   },
