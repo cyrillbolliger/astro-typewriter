@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -23,15 +25,15 @@ jobs:
 
       - name: Get latest git tag
         id: get_tag
-        run: echo ::set-output name=tag::$(git describe --tags --abbrev=0)
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Get version of demo
         id: get_demo_version
-        run: echo ::set-output name=version::$(node -p "require('./demo/package.json').version")
+        run: echo "version=$(node -p \"require('./demo/package.json').version\")" >> $GITHUB_ENV
 
       - name: Get version of typewriter package
         id: get_typewriter_version
-        run: echo ::set-output name=version::$(node -p "require('./packages/astro-typewriter/package.json').version")
+        run: echo "version=$(node -p \"require('./packages/astro-typewriter/package.json').version\")" >> $GITHUB_ENV
 
       - name: Check if versions match
         run: |
@@ -39,7 +41,7 @@ jobs:
             echo "Demo and typewriter package versions do not match"
             echo "Demo version: ${{ steps.get_demo_version.outputs.version }}"
             echo "Typewriter version: ${{ steps.get_typewriter_version.outputs.version }}"
-            echo "Run `npm version --workspaces --no-git-tag-version VERSION` to update all versions"
+            echo 'Run: npm version --workspaces --no-git-tag-version VERSION'
             exit 1
           fi
 
@@ -47,7 +49,7 @@ jobs:
             echo "Git tag does not match typewriter package version"
             echo "Git tag: ${{ steps.get_tag.outputs.tag }}"
             echo "Typewriter version: ${{ steps.get_typewriter_version.outputs.version }}"
-            echo "Run `git tag -a ${{ steps.get_typewriter_version.outputs.version }} -m "[RELEASE] ${{ steps.get_typewriter_version.outputs.version }}"` to create a new tag"
+            echo 'Run: git tag -a ${{ steps.get_typewriter_version.outputs.version }} -m "[RELEASE] ${{ steps.get_typewriter_version.outputs.version }}"'
             exit 1
           fi
 
