@@ -1,7 +1,7 @@
 {
   "name": "astro-typewriter",
   "description": "Lightweight typewriter effect component for Astro",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Cyrill Bolliger <mail@cyrill.me>",
   "license": "MIT",
   "repository": {
