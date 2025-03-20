@@ -40,7 +40,7 @@ jobs:
             exit 1
           fi
 
-          if [ "${{ steps.get_tag.outputs.tag }}" != "v${{ steps.get_typewriter_version.outputs.version }}" ]; then
+          if [ "${{ steps.get_tag.outputs.tag }}" != "${{ steps.get_typewriter_version.outputs.version }}" ]; then
             echo "Git tag does not match typewriter package version"
             echo "Git tag: ${{ steps.get_tag.outputs.tag }}"
             echo "Typewriter version: ${{ steps.get_typewriter_version.outputs.version }}"
