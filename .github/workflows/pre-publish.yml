@@ -25,15 +25,15 @@ jobs:
 
       - name: Get latest git tag
         id: get_tag
-        run: echo ::set-output name=tag::$(git describe --tags --abbrev=0)
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Get version of demo
         id: get_demo_version
-        run: echo ::set-output name=version::$(node -p "require('./demo/package.json').version")
+        run: echo "version=$(node -p \"require('./demo/package.json').version\")" >> $GITHUB_ENV
 
       - name: Get version of typewriter package
         id: get_typewriter_version
-        run: echo ::set-output name=version::$(node -p "require('./packages/astro-typewriter/package.json').version")
+        run: echo "version=$(node -p \"require('./packages/astro-typewriter/package.json').version\")" >> $GITHUB_ENV
 
       - name: Check if versions match
         run: |
