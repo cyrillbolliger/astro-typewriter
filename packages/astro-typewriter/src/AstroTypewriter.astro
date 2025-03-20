@@ -19,8 +19,6 @@ const {
   class: addClass,
   ...rest
 }: Props = Astro.props;
-
-Astro;
 ---
 
 <span {...rest} class={addClass} aria-label={messages.join(", ")}>
@@ -53,12 +51,13 @@ Astro;
     constructor() {
       super();
       // astro guarantees presence and immutability of dataset properties
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       this.#writeSpeed = parseInt(this.dataset.writeSpeed!);
       this.#deleteSpeed = parseInt(this.dataset.deleteSpeed!);
       this.#waitWritten = parseInt(this.dataset.waitWritten!);
       this.#waitDeleted = parseInt(this.dataset.waitDeleted!);
-
       const messages = JSON.parse(this.dataset.messages!);
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
       this.#messages = messages.map(this.#localeSafeSplit);
     }
 
