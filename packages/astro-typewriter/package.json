@@ -31,9 +31,11 @@
     "component"
   ],
   "scripts": {
-    "lint": "eslint --ext .astro,.ts,.tsx,.js,.jsx,.mjs ."
+    "lint": "eslint --ext .astro,.ts,.tsx,.js,.jsx,.mjs src",
+    "check": "astro check"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.4",
     "@eslint/js": "^9.22.0",
     "@typescript-eslint/parser": "^8.27.0",
     "astro": "^5.5.3",
