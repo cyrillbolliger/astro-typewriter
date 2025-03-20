@@ -7,7 +7,9 @@
   ],
   "scripts": {
     "format": "prettier --write \"**/*.{js,ts,html,md,json,astro}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "yarn workspaces run lint",
+    "check": "yarn workspaces run check"
   },
   "devDependencies": {
     "husky": "^9.1.7",
