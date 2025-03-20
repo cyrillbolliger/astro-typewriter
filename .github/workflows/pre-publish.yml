@@ -67,3 +67,15 @@ jobs:
           fi
 
           echo "Success: README.md and packages/astro-typewriter/README.md are in sync"
+
+  check-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install, build, and upload site
+        uses: withastro/action@v3
+        with:
+          path: ./demo
+          package-manager: yarn@latest
