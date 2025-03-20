@@ -1,0 +1,69 @@
+name: Check if package is ready to publish to NPM
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  check-versions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Get latest git tag
+        id: get_tag
+        run: echo ::set-output name=tag::$(git describe --tags --abbrev=0)
+
+      - name: Get version of demo
+        id: get_demo_version
+        run: echo ::set-output name=version::$(node -p "require('./demo/package.json').version")
+
+      - name: Get version of typewriter package
+        id: get_typewriter_version
+        run: echo ::set-output name=version::$(node -p "require('./packages/astro-typewriter/package.json').version")
+
+      - name: Check if versions match
+        run: |
+          if [ "${{ steps.get_demo_version.outputs.version }}" != "${{ steps.get_typewriter_version.outputs.version }}" ]; then
+            echo "Demo and typewriter package versions do not match"
+            echo "Demo version: ${{ steps.get_demo_version.outputs.version }}"
+            echo "Typewriter version: ${{ steps.get_typewriter_version.outputs.version }}"
+            echo "Run `npm version --workspaces --no-git-tag-version VERSION` to update all versions"
+            exit 1
+          fi
+
+          if [ "${{ steps.get_tag.outputs.tag }}" != "v${{ steps.get_typewriter_version.outputs.version }}" ]; then
+            echo "Git tag does not match typewriter package version"
+            echo "Git tag: ${{ steps.get_tag.outputs.tag }}"
+            echo "Typewriter version: ${{ steps.get_typewriter_version.outputs.version }}"
+            echo "Run `git tag -a ${{ steps.get_typewriter_version.outputs.version }} -m "[RELEASE] ${{ steps.get_typewriter_version.outputs.version }}"` to create a new tag"
+            exit 1
+          fi
+
+          echo "Success: All versions match"
+
+  check-readmes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if /README.md and /packages/astro-typewriter/README.md are in sync
+        run: |
+          diff README.md packages/astro-typewriter/README.md
+          if [ $? -ne 0 ]; then
+            echo "README.md and packages/astro-typewriter/README.md are not in sync"
+            echo "Run `cp README.md packages/astro-typewriter/README.md` to update the package README"
+            exit 1
+          fi
+
+          echo "Success: README.md and packages/astro-typewriter/README.md are in sync"
