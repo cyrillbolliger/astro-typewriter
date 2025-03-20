@@ -1,0 +1,8 @@
+{
+  "name": "astro-typewriter-monorepo",
+  "private": true,
+  "workspaces": [
+    "demo",
+    "packages/*"
+  ]
+}

@@ -1,0 +1,305 @@
+---
+import Typewriter from "astro-typewriter";
+import { Code } from "astro-expressive-code/components";
+import Basic from "../examples/Basic.astro";
+import basicCode from "../examples/Basic.astro?raw";
+import Emoji from "../examples/Emoji.astro";
+import emojiCode from "../examples/Emoji.astro?raw";
+import InlineStyles from "../examples/InlineStyles.astro";
+import inlineStylesCode from "../examples/InlineStyles.astro?raw";
+import ClassStyles from "../examples/ClassStyles.astro";
+import classStylesCode from "../examples/ClassStyles.astro?raw";
+import Speeds from "../examples/Speeds.astro";
+import speedsCode from "../examples/Speeds.astro?raw";
+import InheritedStyles from "../examples/InheritedStyles.astro";
+import inheritedStylesCode from "../examples/InheritedStyles.astro?raw";
+import Cursor from "../examples/Cursor.astro";
+import cursorCode from "../examples/Cursor.astro?raw";
+
+const colorPrimary = "#6a57fc";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content={colorPrimary} />
+    <meta
+      name="description"
+      content="Typewriter component for Astro. Lightweight, easy to use, and accessible."
+    />
+    <meta name="author" content="Cyrill Bolliger" />
+    <title>Typewriter Component for Astro</title>
+  </head>
+  <body>
+    <header class="hero">
+      <h1>
+        <Typewriter
+          messages={["Lightweight", "Easy to Use", "Accessible"]}
+          style={{
+            background: `linear-gradient(to right, ${colorPrimary} 0%, #f10052 100%)`,
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
+          }}
+        /><br />
+        <span style="display: block; text-wrap: balance">
+          Typewriter Component for Astro
+        </span>
+      </h1>
+      <em>SEO Optimized and Screen Reader Friendly</em>
+      <a
+        href="https://github.com/cyrillbolliger/astro-typewriter"
+        class="github-corner"
+        aria-label="View source on GitHub"
+      >
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 250 250"
+          style="fill: #000; color: #fff;position: absolute; top: 0; border: 0; right: 0;"
+          aria-hidden="true"
+        >
+          <title>View source on GitHub</title>
+          <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+          <path
+            d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+            fill="currentColor"
+            style="transform-origin: 130px 106px;"
+            class="octo-arm"></path>
+          <path
+            d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+            fill="currentColor"
+            class="octo-body"></path>
+        </svg>
+      </a>
+    </header>
+    <main>
+      <section>
+        <header>
+          <h2>Features</h2>
+        </header>
+        <ul>
+          <li>
+            Respects <code>prefers-reduced-motion: reduce</code>: full message
+            is presented immediately, following message appears after the same
+            delay as if animated.
+          </li>
+          <li>
+            Works without JavaScript: all messages are shown immediately,
+            separated by a comma.
+          </li>
+          <li>
+            Screen readers and search engines see all messages at once and
+            immediately, separated by a comma.
+          </li>
+          <li>
+            So lightweight, that it doesn't react to attribute changes (that's
+            why you use Astro, right?).
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Installation</h2>
+        <Code
+          lang="sh"
+          code={`
+npm install astro-typewriter
+# or 
+yarn add astro-typewriter
+# or
+pnpm add astro-typewriter
+				`}
+        />
+      </section>
+
+      <section>
+        <h2>Usage</h2>
+
+        <section>
+          <h3>Basic example</h3>
+          <p><Basic /></p>
+          <Code lang="astro" code={basicCode} />
+        </section>
+
+        <section>
+          <h3>With emojis</h3>
+          <p><Emoji /></p>
+          <Code lang="astro" code={emojiCode} />
+          <p>
+            Add <code>line-height: 1.2em</code> to prevent layout shifts. <a
+              href="https://stackoverflow.com/questions/70037803/emojis-are-causing-change-in-line-height"
+              rel="noopener noreferrer">&rarr; More info</a
+            >
+          </p>
+        </section>
+
+        <section>
+          <h3>With inherited styles</h3>
+          <p><InheritedStyles /></p>
+          <Code lang="astro" code={inheritedStylesCode} />
+        </section>
+
+        <section>
+          <h3>With class styles</h3>
+          <p><ClassStyles /></p>
+          <Code lang="astro" code={classStylesCode} />
+        </section>
+
+        <section>
+          <h3>With inline styles</h3>
+          <p><InlineStyles /></p>
+          <Code lang="astro" code={inlineStylesCode} />
+        </section>
+
+        <section>
+          <h3>With custom cursor</h3>
+          <p><Cursor /></p>
+          <Code lang="astro" code={cursorCode} />
+        </section>
+
+        <section>
+          <h3>With custom speeds</h3>
+          <p><Speeds /></p>
+          <Code lang="astro" code={speedsCode} />
+          <p>All speeds are in milliseconds.</p>
+        </section>
+      </section>
+
+      <section>
+        <h2>Attributes</h2>
+        <ul>
+          <li>
+            <code>messages</code>: Array of strings to be typed out.
+          </li>
+          <li>
+            <code>writeSpeed</code>: Speed in milliseconds for typing
+            characters.
+          </li>
+          <li>
+            <code>deleteSpeed</code>: Speed in milliseconds for deleting
+            characters.
+          </li>
+          <li>
+            <code>waitWritten</code>: Time in milliseconds to wait after typing
+            out a message.
+          </li>
+          <li>
+            <code>waitDeleted</code>: Time in milliseconds to wait after
+            deleting a message.
+          </li>
+          <li>
+            <code>*</code>: Any <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes"
+              rel="noopener noreferrer">&rarr; global attribute</a
+            >.
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer>
+      <p>
+        Built for you with ❤️ by <a
+          href="https://github.com/cyrillbolliger"
+          rel="noopener noreferrer">Cyrill Bolliger</a
+        >.<br />
+        This is free and open-source software. Contribute on <a
+          href="https://github.com/cyrillbolliger/astro-typewriter"
+          rel="noopener noreferrer">GitHub</a
+        >.
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style define:vars={{ colorPrimary }}>
+  body {
+    font-family: sans-serif;
+    margin: auto;
+  }
+
+  .hero {
+    font-size: 150%;
+    text-align: center;
+    padding: 5rem 1rem calc(5rem + 1em);
+    background: rgba(127, 127, 127, 0.1);
+
+    h1 {
+      margin: 1em 0;
+    }
+
+    em {
+      color: slategray;
+      font-style: normal;
+      line-height: 1.5;
+      text-wrap: balance;
+    }
+  }
+
+  main {
+    padding: 2rem;
+    max-width: 50rem;
+    margin: auto;
+  }
+
+  section {
+    margin: 2rem 0 3rem;
+  }
+
+  h2 {
+    margin: 1em 0;
+  }
+
+  ul {
+    line-height: 1.25em;
+  }
+
+  li {
+    margin: 0.5em 0;
+  }
+
+  code {
+    background: rgba(127, 127, 127, 0.1);
+    padding: 0.1em 0.3em;
+    border-radius: 0.2em;
+  }
+
+  a {
+    color: var(--colorPrimary);
+  }
+
+  footer {
+    text-align: center;
+    color: slategray;
+    padding: 0 1rem 1rem;
+  }
+
+  .github-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+  @keyframes octocat-wave {
+    0%,
+    100% {
+      transform: rotate(0);
+    }
+    20%,
+    60% {
+      transform: rotate(-25deg);
+    }
+    40%,
+    80% {
+      transform: rotate(10deg);
+    }
+  }
+  @media (max-width: 500px) {
+    .github-corner:hover .octo-arm {
+      animation: none;
+    }
+    .github-corner .octo-arm {
+      animation: octocat-wave 560ms ease-in-out;
+    }
+  }
+</style>

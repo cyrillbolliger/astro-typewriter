@@ -1,0 +1,165 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import stylesUrl from "./styles.css?url";
+
+interface Props extends HTMLAttributes<"span"> {
+  messages: string[];
+  writeSpeed?: number; // speed of typing in ms
+  deleteSpeed?: number; // backspace speed in ms
+  waitWritten?: number; // time to keep the text on screen in ms
+  waitDeleted?: number; // time after delete before writing again in ms
+}
+
+const {
+  messages = [],
+  writeSpeed = 100,
+  deleteSpeed = 33,
+  waitWritten = 1500,
+  waitDeleted = 500,
+  class: addClass,
+  ...rest
+}: Props = Astro.props;
+
+Astro;
+---
+
+<span {...rest} class={addClass} aria-label={messages.join(", ")}>
+  <template shadowrootmode="open">
+    <astro-typewriter
+      part="typewriter"
+      data-messages={JSON.stringify(messages)}
+      data-write-speed={writeSpeed}
+      data-delete-speed={deleteSpeed}
+      data-wait-written={waitWritten}
+      data-wait-deleted={waitDeleted}
+      aria-hidden="true"
+      class="astro-typewriter"
+      ><noscript>{messages.join(", ")}</noscript></astro-typewriter
+    >
+    <link rel="stylesheet" href={stylesUrl} />
+  </template>
+</span>
+
+<script>
+  class AstroTypewriter extends HTMLElement {
+    #messages = [] as string[][]; // array of messages as array of chars
+    #writeSpeed = 100;
+    #deleteSpeed = 33;
+    #waitWritten = 1500;
+    #waitDeleted = 500;
+
+    #timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    constructor() {
+      super();
+      // astro guarantees presence and immutability of dataset properties
+      this.#writeSpeed = parseInt(this.dataset.writeSpeed!);
+      this.#deleteSpeed = parseInt(this.dataset.deleteSpeed!);
+      this.#waitWritten = parseInt(this.dataset.waitWritten!);
+      this.#waitDeleted = parseInt(this.dataset.waitDeleted!);
+
+      const messages = JSON.parse(this.dataset.messages!);
+      this.#messages = messages.map(this.#localeSafeSplit);
+    }
+
+    #localeSafeSplit(str: string) {
+      if (!Intl.Segmenter) {
+        return Array.from(str);
+      }
+      return [...new Intl.Segmenter().segment(str)].map((x) => x.segment);
+    }
+
+    #wait(millis: number) {
+      return new Promise((res) => (this.#timeoutId = setTimeout(res, millis)));
+    }
+
+    #pauseCursor() {
+      this.classList.add("paused");
+    }
+
+    #resumeCursor() {
+      this.classList.remove("paused");
+    }
+
+    async #printAnimated({
+      chars,
+      charIdx,
+      direction = "write",
+    }: {
+      chars: string[]; // the whole message as array of chars
+      charIdx: number;
+      direction?: "write" | "delete";
+    }): Promise<void> {
+      if (charIdx === chars.length) {
+        this.#resumeCursor();
+        await this.#wait(this.#waitWritten);
+        this.#pauseCursor();
+        return this.#printAnimated({
+          chars: chars,
+          charIdx: charIdx - 1,
+          direction: "delete",
+        });
+      }
+
+      if (charIdx === -1) {
+        this.#resumeCursor();
+        await this.#wait(this.#waitDeleted);
+        this.#pauseCursor();
+        return;
+      }
+
+      // add/remove char by char (recursive) otherwise
+      const nextCharIdx = direction === "write" ? charIdx + 1 : charIdx - 1;
+      const newMessage =
+        nextCharIdx > 0 ? chars.slice(0, nextCharIdx).join("") : "";
+
+      this.innerText = newMessage;
+
+      const delay =
+        direction === "write" ? this.#writeSpeed : this.#deleteSpeed;
+      await this.#wait(delay);
+
+      return this.#printAnimated({
+        chars: chars,
+        charIdx: nextCharIdx,
+        direction,
+      });
+    }
+
+    async #printReducedMotion({ text }: { text: string }) {
+      this.innerText = text;
+      await this.#wait(text.length * this.#writeSpeed && this.#waitWritten);
+    }
+
+    async #runAnimation() {
+      while (true) {
+        for (const message of this.#messages) {
+          const reducedMotion = window.matchMedia(
+            `(prefers-reduced-motion: reduce)`
+          ).matches; // keep in loop to react to changes
+
+          if (reducedMotion) {
+            await this.#printReducedMotion({ text: message.join("") });
+          } else {
+            await this.#printAnimated({
+              chars: message,
+              charIdx: 0,
+            });
+          }
+        }
+      }
+    }
+
+    connectedCallback() {
+      this.#runAnimation();
+    }
+
+    disconnectedCallback() {
+      if (this.#timeoutId) {
+        clearTimeout(this.#timeoutId);
+      }
+    }
+  }
+
+  customElements.define("astro-typewriter", AstroTypewriter);
+</script>

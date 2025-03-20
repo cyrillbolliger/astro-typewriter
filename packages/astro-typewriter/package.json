@@ -1,0 +1,40 @@
+{
+  "name": "astro-typewriter",
+  "description": "Lightweight typewriter effect component for Astro",
+  "version": "1.0.0",
+  "author": "Cyrill Bolliger <mail@cyrill.me>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cyrillbolliger/astro-typewriter.git",
+    "directory": "packages/astro-typewriter"
+  },
+  "homepage": "https://github.com/cyrillbolliger/astro-typewriter#readme",
+  "bugs": {
+    "url": "https://github.com/cyrillbolliger/astro-typewriter/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "src",
+    "index.ts"
+  ],
+  "keywords": [
+    "astro-component",
+    "astro",
+    "withastro",
+    "typewriter",
+    "typewriter-effect",
+    "ui",
+    "component"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "astro": "^5.5.3"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  }
+}

@@ -1,0 +1,27 @@
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background-color: currentColor;
+  transform: translateY(0.125em);
+  animation: blink 0.8s steps(2, start) infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    /* don't use display: none, it will lead to layout shift when 
+          chaning prefers-reduced-motion */
+    animation: none;
+    visibility: hidden;
+  }
+}
+
+.paused::after {
+  /* stop the cursor blinking AND reset animation (pausing would only stop) */
+  animation: none;
+}

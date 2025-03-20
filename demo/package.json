@@ -1,0 +1,16 @@
+{
+  "name": "demo",
+  "type": "module",
+  "private": "true",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.5.3",
+    "astro-expressive-code": "^0.40.2",
+    "astro-typewriter": "*"
+  }
+}
