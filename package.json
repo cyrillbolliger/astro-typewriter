@@ -4,5 +4,23 @@
   "workspaces": [
     "demo",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,ts,html,md,json,astro}\"",
+    "prepare": "husky",
+    "lint": "yarn workspaces run lint",
+    "check": "yarn workspaces run check"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-astro": "^0.14.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "lint-staged": {
+    "**/*.{js,ts,html,md,json,astro}": "prettier --write --ignore-unknown"
+  }
 }

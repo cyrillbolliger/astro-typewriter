@@ -1,14 +1,47 @@
-name: Check if package is ready to publish to NPM
+name: Lint, Check, and Build
 
 on:
   push:
-    tags:
-      - "*.*.*"
-      - "v*.*.*"
-    branches-ignore:
-      - main
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run astro check
+        run: yarn run check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run eslint
+        run: yarn run lint
+
+  check-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run astro build
+        uses: withastro/action@v3
+        with:
+          path: ./demo
+          package-manager: yarn@latest
+
   check-versions:
     runs-on: ubuntu-latest
 
@@ -73,15 +106,3 @@ jobs:
           fi
 
           echo "Success: README.md and packages/astro-typewriter/README.md are in sync"
-
-  check-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install, build, and upload site
-        uses: withastro/action@v3
-        with:
-          path: ./demo
-          package-manager: yarn@latest
