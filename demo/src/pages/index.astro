@@ -220,23 +220,38 @@ pnpm add astro-typewriter
 </html>
 
 <style define:vars={{ colorPrimary }}>
+  :root {
+    --colorDimmed: hsl(from currentColor h s 40%);
+
+    @media screen and (prefers-color-scheme: dark) {
+      --colorDimmed: hsl(from currentColor h s 60%);
+    }
+  }
+
   body {
     font-family: sans-serif;
     margin: auto;
+    background: white;
+    color: black;
+
+    @media screen and (prefers-color-scheme: dark) {
+      background: black;
+      color: white;
+    }
   }
 
   .hero {
     font-size: 150%;
     text-align: center;
     padding: 5rem 1rem calc(5rem + 1em);
-    background: rgba(127, 127, 127, 0.1);
+    background: rgba(from currentColor r g b / 0.1);
 
     h1 {
       margin: 1em 0;
     }
 
     em {
-      color: slategray;
+      color: var(--colorDimmed);
       font-style: normal;
       line-height: 1.5;
       text-wrap: balance;
@@ -266,18 +281,22 @@ pnpm add astro-typewriter
   }
 
   code {
-    background: rgba(127, 127, 127, 0.1);
+    background: rgba(from currentColor r g b / 0.1);
     padding: 0.1em 0.3em;
     border-radius: 0.2em;
   }
 
   a {
     color: var(--colorPrimary);
+
+    @media screen and (prefers-color-scheme: dark) {
+      color: hsl(from var(--colorPrimary) h s 80%);
+    }
   }
 
   footer {
     text-align: center;
-    color: slategray;
+    color: var(--colorDimmed);
     padding: 0 1rem 1rem;
   }
 
