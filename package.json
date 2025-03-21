@@ -18,7 +18,7 @@
     "prettier-plugin-astro": "^0.14.1"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=20.0.0"
   },
   "lint-staged": {
     "**/*.{js,ts,html,md,json,astro}": "prettier --write --ignore-unknown"
