@@ -22,8 +22,8 @@ yarn workspace astro-typewriter version --new-version $VERSION --no-git-tag-vers
 
 echo "Commit version"
 git add "$SCRIPT_DIR/demo/package.json" "$SCRIPT_DIR/packages/astro-typewriter/package.json"
-git commit -m "[FEAT]: update version in package.json"
-git tag -a "$VERSION" -m "[RELEASE]: bump version to $VERSION"
+git commit -m "[FEAT] update version in package.json"
+git tag -a "$VERSION" -m "[RELEASE] bump version to $VERSION"
 
 echo "Version $VERSION is ready to be pushed"
 read -p "Do you want to push the changes? (y/n) " -n 1 -r
