@@ -21,8 +21,9 @@ const {
 }: Props = Astro.props;
 ---
 
-<span {...rest} class={addClass} aria-label={messages.join(", ")}>
+<span {...rest} class={addClass}>
   <template shadowrootmode="open">
+    <span class="sr-only">{messages.join(", ")}</span>
     <astro-typewriter
       part="typewriter"
       data-messages={JSON.stringify(messages)}
