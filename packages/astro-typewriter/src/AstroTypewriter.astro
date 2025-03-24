@@ -128,7 +128,9 @@ const {
 
     async #printReducedMotion({ text }: { text: string }) {
       this.innerText = text;
-      await this.#wait(text.length * this.#writeSpeed && this.#waitWritten);
+      await this.#wait(
+        text.length * this.#writeSpeed + this.#waitWritten + this.#waitDeleted
+      );
     }
 
     async #runAnimation() {
