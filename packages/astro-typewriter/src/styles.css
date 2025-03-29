@@ -4,7 +4,7 @@
   }
 }
 
-::after {
+span[part="typewriter"]::after {
   content: "";
   display: inline-block;
   width: 1px;
@@ -21,7 +21,7 @@
   }
 }
 
-.paused::after {
+span[part="typewriter"].paused::after {
   /* stop the cursor blinking AND reset animation (pausing would only stop) */
   animation: none;
 }

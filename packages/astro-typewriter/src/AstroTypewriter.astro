@@ -1,6 +1,5 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import stylesUrl from "./styles.css?url";
 
 interface Props extends HTMLAttributes<"span"> {
   messages: string[];
@@ -16,30 +15,24 @@ const {
   deleteSpeed = 33,
   waitWritten = 1500,
   waitDeleted = 500,
-  class: addClass,
   ...rest
 }: Props = Astro.props;
 ---
 
-<span {...rest} class={addClass}>
-  <template shadowrootmode="open">
-    <span class="sr-only">{messages.join(", ")}</span>
-    <astro-typewriter
-      part="typewriter"
-      data-messages={JSON.stringify(messages)}
-      data-write-speed={writeSpeed}
-      data-delete-speed={deleteSpeed}
-      data-wait-written={waitWritten}
-      data-wait-deleted={waitDeleted}
-      aria-hidden="true"
-      class="astro-typewriter"
-      ><noscript>{messages.join(", ")}</noscript></astro-typewriter
-    >
-    <link rel="stylesheet" href={stylesUrl} />
-  </template>
-</span>
+<astro-typewriter
+  {...rest}
+  data-messages={JSON.stringify(messages)}
+  data-write-speed={writeSpeed}
+  data-delete-speed={deleteSpeed}
+  data-wait-written={waitWritten}
+  data-wait-deleted={waitDeleted}
+>
+  <noscript>{messages.join(", ")}</noscript>
+</astro-typewriter>
 
 <script>
+  import styles from "./styles.css?inline";
+
   class AstroTypewriter extends HTMLElement {
     #messages = [] as string[][]; // array of messages as array of chars
     #writeSpeed = 100;
@@ -48,6 +41,7 @@ const {
     #waitDeleted = 500;
 
     #timeoutId: ReturnType<typeof setTimeout> | null = null;
+    #container: HTMLSpanElement;
 
     constructor() {
       super();
@@ -60,6 +54,24 @@ const {
       const messages = JSON.parse(this.dataset.messages!);
       /* eslint-enable @typescript-eslint/no-non-null-assertion */
       this.#messages = messages.map(this.#localeSafeSplit);
+
+      const stylesheet = new CSSStyleSheet();
+      stylesheet.replaceSync(styles);
+
+      const screenreader = document.createElement("span");
+      screenreader.classList.add("sr-only");
+      screenreader.innerText = messages.join(", ");
+
+      const container = document.createElement("span");
+      container.setAttribute("part", "typewriter");
+      container.setAttribute("aria-hidden", "true");
+
+      const shadow = this.attachShadow({ mode: "open" });
+      shadow.adoptedStyleSheets = [stylesheet];
+      shadow.appendChild(screenreader);
+      shadow.appendChild(container);
+
+      this.#container = container;
     }
 
     #localeSafeSplit(str: string) {
@@ -74,11 +86,11 @@ const {
     }
 
     #pauseCursor() {
-      this.classList.add("paused");
+      this.#container.classList.add("paused");
     }
 
     #resumeCursor() {
-      this.classList.remove("paused");
+      this.#container.classList.remove("paused");
     }
 
     async #printAnimated({
@@ -113,7 +125,7 @@ const {
       const newMessage =
         nextCharIdx > 0 ? chars.slice(0, nextCharIdx).join("") : "";
 
-      this.innerText = newMessage;
+      this.#container.innerText = newMessage;
 
       const delay =
         direction === "write" ? this.#writeSpeed : this.#deleteSpeed;
@@ -127,14 +139,14 @@ const {
     }
 
     async #printReducedMotion({ text }: { text: string }) {
-      this.innerText = text;
+      this.#container.innerText = text;
       await this.#wait(
         text.length * this.#writeSpeed + this.#waitWritten + this.#waitDeleted
       );
     }
 
     async #runAnimation() {
-      while (true) {
+      while (this.isConnected) {
         for (const message of this.#messages) {
           const reducedMotion = window.matchMedia(
             `(prefers-reduced-motion: reduce)`
