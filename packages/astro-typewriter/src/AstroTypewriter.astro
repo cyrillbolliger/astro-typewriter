@@ -59,7 +59,7 @@ const {
       stylesheet.replaceSync(styles);
 
       const screenreader = document.createElement("span");
-      screenreader.classList.add("sr-only");
+      screenreader.classList.add("screenreader-or-print");
       screenreader.innerText = messages.join(", ");
 
       const container = document.createElement("span");

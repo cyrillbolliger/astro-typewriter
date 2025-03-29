@@ -4,36 +4,45 @@
   }
 }
 
-span[part="typewriter"]::after {
-  content: "";
-  display: inline-block;
-  width: 1px;
-  height: 1em;
-  background-color: currentColor;
-  transform: translateY(0.125em);
-  animation: blink 0.8s steps(2, start) infinite;
+span[part="typewriter"] {
+  @media print {
+    display: none;
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    /* don't use display: none, it will lead to layout shift when 
-          chaning prefers-reduced-motion */
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    background-color: currentColor;
+    transform: translateY(0.125em);
+    animation: blink 0.8s steps(2, start) infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      /* don't use display: none, it will lead to layout shift when 
+            chaning prefers-reduced-motion */
+      animation: none;
+      visibility: hidden;
+    }
+  }
+
+  &.paused::after {
+    /* stop the cursor blinking AND reset animation (pausing would only stop) */
     animation: none;
-    visibility: hidden;
   }
 }
 
-span[part="typewriter"].paused::after {
-  /* stop the cursor blinking AND reset animation (pausing would only stop) */
-  animation: none;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+.screenreader-or-print {
+  /* Show element off screen for screenreaders, show normal for print */
+  @media not print {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 }
