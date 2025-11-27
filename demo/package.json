@@ -12,7 +12,7 @@
     "check": "astro check"
   },
   "dependencies": {
-    "astro": "^5.5.3",
+    "astro": "^5.15.9",
     "astro-expressive-code": "^0.40.2",
     "astro-typewriter": "*"
   },
