@@ -14,9 +14,7 @@
   "dependencies": {
     "astro": "^6.0.3",
     "astro-expressive-code": "^0.41.7",
-    "astro-typewriter": "*",
-    "lint-staged": "^16.3.3",
-    "prettier": "^3.5.3"
+    "astro-typewriter": "*"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
