@@ -11,10 +11,10 @@ if [ -z "$VERSION" ]; then
 fi
 
 echo "Verify code quality"
-yarn format
-yarn lint
-yarn check
-yarn workspace demo build
+yarn run format
+yarn run lint
+yarn run check
+yarn run build
 
 echo "Bump version"
 yarn workspace demo version --new-version $VERSION --no-git-tag-version

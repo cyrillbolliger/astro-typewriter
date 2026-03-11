@@ -9,16 +9,19 @@
     "format": "prettier --write \"**/*.{js,ts,html,md,json,astro}\"",
     "prepare": "husky",
     "lint": "yarn workspaces run lint",
-    "check": "yarn workspaces run check"
+    "check": "yarn workspace demo run check",
+    "dev": "yarn workspace demo run dev",
+    "build": "yarn workspace demo run build",
+    "preview": "yarn workspace demo run preview"
   },
   "devDependencies": {
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^16.3.3",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   },
   "lint-staged": {
     "**/*.{js,ts,html,md,json,astro}": "prettier --write --ignore-unknown"
