@@ -1,3 +1,16 @@
+#!/usr/bin/env sh
+
+if [ -z "${NVM_DIR:-}" ]; then
+	export NVM_DIR="$HOME/.nvm"
+fi
+
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+	. "$NVM_DIR/nvm.sh"
+	if [ -f .nvmrc ]; then
+		nvm use --silent >/dev/null 2>&1 || nvm install >/dev/null 2>&1
+	fi
+fi
+
 npx lint-staged
 yarn run lint
 yarn run check
